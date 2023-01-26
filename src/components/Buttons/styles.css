@@ -1,0 +1,21 @@
+.buttons-container {
+    margin: 50px 0 50px 100px;
+    display: flex;
+    justify-content: flex-start;
+    width: 80%;
+  }
+  
+  .buttons-button {
+    margin-right: 5px;
+    margin-left: 20px;
+    font-size: 14px;
+    background-color: rgb(14, 116, 205);
+  }
+
+ 
+  #add-dropdown {
+    background-color:green;
+    border-radius: 10px;
+  
+    
+  }
