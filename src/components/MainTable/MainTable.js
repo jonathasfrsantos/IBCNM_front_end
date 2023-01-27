@@ -28,7 +28,7 @@ class MainTable extends React.Component {
 
   render() {
     return (
-      <Table className="MainTable" striped  hover bordered>
+      <Table className="MainTable"   hover >
         <thead>
           <tr>
             <th>#</th>
@@ -45,12 +45,12 @@ class MainTable extends React.Component {
             <tr key={transaction.id}>
               <td>{index + 1}</td>
               <td>{moment(transaction.data).format("DD/MM/YYYY")}</td>
-              <td >{transaction.entrada}</td>
-              <td >{transaction.saida}</td>
+              <td className="td_entrada">{transaction.entrada}</td>
+              <td className="td_saida">{transaction.saida}</td>
               <td>{transaction.historico}</td>
               <td>{transaction.finalidade}</td>
-              <td>{transaction.banco_caixa}</td>
-            </tr>
+              <td>{transaction.bancoCaixa}</td> 
+            </tr> // o nome deve ser o mesmo que nos atributos do back-end
           ))}
         </tbody>
       </Table>

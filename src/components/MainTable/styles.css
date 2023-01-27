@@ -14,9 +14,9 @@ Table {
 thead {
     text-align: center;
     font-size: 16px;
-    color: black;
+    color:white;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: rgb(156, 198, 235);
+    background-color: rgb(14, 116, 205)
 
 }
 
@@ -24,9 +24,16 @@ td {
     text-align: center;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
-    color: black;
+
 }
 
+tbody td.td_entrada {
+    color: green;
+}
+
+tbody td.td_saida{
+    color: red
+}
 
 
 

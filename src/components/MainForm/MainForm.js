@@ -131,7 +131,7 @@ class MainForm extends Component {
           <Modal.Body>
 
             <Form>
-              <label value={this.state.tipo}> {this.state.tipo}</label>
+              
               <div className="radio-container">
                 <Form.Check
                   className="form-check"
