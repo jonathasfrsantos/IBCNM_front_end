@@ -14,8 +14,13 @@ function MainForm2(props) {
     bancoCaixa: "",
     tipo: "",
     valor: "",
+    modalOpen: false,
+    itemId: null
   });
 
+const handleOpenModal = () => {
+  setState({...state, showModal: true});
+}
 
 const handleClose = () => {
   setState({ ...state, showModal: false });
@@ -83,7 +88,7 @@ const handleSubmit = (e) => {
 
   return (
     <>
-      <Modal
+      <Modal isOpen={this.modalOpen} onClose={this.handleClose}
         show={props.showModal}
         onHide={props.handleClose}
         title={props.title}
