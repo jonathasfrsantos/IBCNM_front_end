@@ -107,6 +107,9 @@ class MainForm extends Component {
 
       axios.post("http://localhost:8080/lancamentos",dados)
         .then(response => {
+          this.setState((prevState) => {
+            return {lancamentos:[...prevState.lancamentos, response.dados]}
+          });
           this.clearForm();
           this.updateTable();
         })

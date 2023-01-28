@@ -35,5 +35,17 @@ tbody td.td_saida{
     color: red
 }
 
+.fa-edit {
+    color: green;
+    border: none;
+    background-color: transparent;
+    
+}
+
+.fa-trash {
+    color: red;
+
+}
+
 
 
