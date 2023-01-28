@@ -45,4 +45,21 @@ export const ApiCRUD = {
       await axios.delete(`${baseUrl}/${id}`);
     } catch (error) {}
   },
+
+  async saveOrUpdate(id, data){
+
+    try {
+        if(id) {
+            await axios.update(id, data);
+
+        }else {
+            await axios.create(data);
+        }
+        
+    } catch (error) {
+        console.error(error);
+        
+    }
+
+  }
 };

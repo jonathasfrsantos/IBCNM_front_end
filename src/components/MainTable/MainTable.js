@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "react-bootstrap";
 import moment from "moment/moment";
-import './styles.css';
+import "./styles.css";
 import { ApiCRUD } from "../../services/api/ApiCRUD";
 
 class MainTable extends Component {
@@ -9,44 +9,46 @@ class MainTable extends Component {
     super(props);
     this.state = {
       lancamentos: [],
-      show: false
+      show: false,
     };
 
-
     this.handleExcluir = this.handleExcluir.bind(this);
-
   }
 
-  handleExcluir(id){
-      if(window.confirm("Tem certeza que deseja excluir esse lancamento? ")){
-          ApiCRUD.delete(id)
-          .then(()=> {
-            this.setState(prevState => {
-              return {
-                lancamento: prevState.lancamentos.filter(lancamento => lancamento.id !== id)
-              }
-            });
-          })
-         
-      }
-      
+  handleAtualizar = async(id) => {
+    const dados = await ApiCRUD.getByDisplayValue(id);
+    this.setState({
+      FormData: {
+        ...dados,
+        id
+      },
+      formIsOpen : true
+    });
+  }
+ 
+  handleExcluir(id) {
+    if (window.confirm("Tem certeza que deseja excluir esse lancamento? ")) {
+      ApiCRUD.delete(id).then(() => {
+        this.setState((prevState) => {
+          return {
+            lancamento: prevState.lancamentos.filter(
+              (lancamento) => lancamento.id !== id
+            ),
+          };
+        });
+      });
     }
+  }
 
   componentDidMount() {
-    ApiCRUD
-      .getAll()
-      .then(response => {
-        this.setState({ lancamentos: response});
-      })
-      .catch(error => {
-        console.log(error);
-      })
+    ApiCRUD.getAll().then((response) => {
+      this.setState({ lancamentos: response });
+    });
   }
-
 
   render() {
     return (
-      <Table className="MainTable"   hover >
+      <Table className="MainTable" hover>
         <thead>
           <tr>
             <th>#</th>
@@ -69,9 +71,9 @@ class MainTable extends Component {
               <td className="td_saida">{lancamentos.saida}</td>
               <td>{lancamentos.historico}</td>
               <td>{lancamentos.finalidade}</td>
-              <td>{lancamentos.bancoCaixa}</td> 
-              <td> <button onClick= {() => this.handleAtualizar(lancamentos.id)}> <i className="fas fa-edit"></i></button></td>
-              <td> <button onClick= {() => this.handleExcluir(lancamentos.id)}> <i className="fas fa-trash"></i> </button></td>
+              <td>{lancamentos.bancoCaixa}</td>
+              <td>{" "}<button onClick={() => this.handleAtualizar(lancamentos.id)}>{" "}<i className="fas fa-edit"></i></button></td>
+              <td>{" "}<button onClick={() => this.handleExcluir(lancamentos.id)}>{" "}<i className="fas fa-trash"></i>{" "}</button></td>
             </tr> // o nome deve ser o mesmo que nos atributos do back-end
           ))}
         </tbody>

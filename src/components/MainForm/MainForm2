@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
+import { ApiCRUD } from "../../services/api/ApiCRUD";
 import "./styles.css";
 
 function MainForm2(props) {
@@ -53,11 +53,15 @@ const getColor = () => {
     }
 };
 
+
+
+
+
 const handleSubmit = (e) => {
   e.preventDefault();
-  const { data, historico, finalidade, bancoCaixa, valor, tipo } = state;
+  const { id, data, historico, finalidade, bancoCaixa, valor, tipo } = state;
 
-  let dados = { data, historico, finalidade, bancoCaixa, tipo };
+  let dados = { id, data, historico, finalidade, bancoCaixa, tipo };
 
   if (tipo === "entrada") {
     dados.entrada = valor;
@@ -67,8 +71,7 @@ const handleSubmit = (e) => {
     dados.entrada = null;
   }
 
-  axios
-    .post("http://localhost:8080/lancamentos", dados)
+    ApiCRUD.saveOrUpdate(id, dados)
     .then((response) => {
       clearForm();
      
