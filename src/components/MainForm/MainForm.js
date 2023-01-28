@@ -92,7 +92,7 @@ class MainForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const {  data, historico, finalidade, bancoCaixa, tipo, valor } =
+    const {  data, historico, finalidade, bancoCaixa, valor } =
       this.state;
 
       let dados = {data, historico, finalidade, bancoCaixa};
@@ -107,9 +107,7 @@ class MainForm extends Component {
 
       axios.post("http://localhost:8080/lancamentos",dados)
         .then(response => {
-          this.setState((prevState) => {
-            return {lancamentos:[...prevState.lancamentos, response.dados]}
-          });
+      
           this.clearForm();
           this.updateTable();
         })

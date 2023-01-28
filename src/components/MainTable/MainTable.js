@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { Table } from "react-bootstrap";
 import moment from "moment/moment";
 import './styles.css';
+import { ApiCRUD } from "../../services/api/ApiCRUD";
 
-class MainTable extends React.Component {
+class MainTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,57 +12,35 @@ class MainTable extends React.Component {
       show: false
     };
 
-    this.handleAtualizar = this.handleAtualizar.bind(this);
+
     this.handleExcluir = this.handleExcluir.bind(this);
- 
 
-  }
-
-  handleAtualizar(id){
-    axios.get('hhtp://localhost:8080/lancamentos/${id}')
-      .then(response => {
-        this.setState({
-          data: response.lancamentos.data,
-          entrada: response.lancamentos.entrada,
-          saida: response.lancamentos.saida,
-          historico: response.lancamentos.historico,
-          finalidade: response.lancamentos.finalidade,
-          bancoCaixa: response.lancamentos.bancoCaixa,
-          tipo: response.lancamentos.tipo,
-          valor: response.lancamentos.valor,
-          show: true
-
-        })
-      })
   }
 
   handleExcluir(id){
       if(window.confirm("Tem certeza que deseja excluir esse lancamento? ")){
-          axios.delete(`http://localhost:8080/lancamentos/${id}`) 
-          .then(response => {
+          ApiCRUD.delete(id)
+          .then(()=> {
             this.setState(prevState => {
               return {
                 lancamento: prevState.lancamentos.filter(lancamento => lancamento.id !== id)
               }
             });
           })
-          .catch(error => {
-            alert("Erro ao excluir a transação");
-            console.log(error);
-          });
+         
       }
       
     }
 
   componentDidMount() {
-    axios
-      .get("http://localhost:8080/lancamentos")
+    ApiCRUD
+      .getAll()
       .then(response => {
-        this.setState({ lancamentos: response.data });
+        this.setState({ lancamentos: response});
       })
       .catch(error => {
         console.log(error);
-      });
+      })
   }
 
 
