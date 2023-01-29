@@ -50,10 +50,10 @@ export const ApiCRUD = {
 
     try {
         if(id) {
-            await axios.update(id, data);
+            await this.update(id, data);
 
         }else {
-            await axios.create(data);
+            await this.create(data);
         }
         
     } catch (error) {
