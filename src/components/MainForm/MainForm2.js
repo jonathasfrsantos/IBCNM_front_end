@@ -15,80 +15,78 @@ function MainForm2(props) {
     tipo: "",
     valor: "",
     modalOpen: false,
-    itemId: null
+    itemId: null,
   });
 
-const handleOpenModal = () => {
-  setState({...state, showModal: true});
-}
+  const {tipo} = (props);
 
-const handleClose = () => {
-  setState({ ...state, showModal: false });
-  clearForm();
-};
+  const handleOpenModal = () => {
+    setState({ ...state, showModal: true });
+  };
 
-const clearForm = () => {
-  setState({
-    data: "",
-    valor: "",
-    historico: "",
-    finalidade: "",
-    bancoCaixa: "",
-  });
-};
+  const handleClose = () => {
+    setState({ ...state, showModal: false });
+    clearForm();
+  };
 
-const handleTipoChange = (e) => {
-  setState({ ...state, tipo: e.target.value });
-};
+  const clearForm = () => {
+    setState({
+      data: "",
+      valor: "",
+      historico: "",
+      finalidade: "",
+      bancoCaixa: "",
+    });
+  };
 
+  const handleTipoChange = (e) => {
+    setState({ ...state, tipo: e.target.value });
+  };
 
-const handleChange = (e) => {
-  setState({ ...state, [e.target.id]: e.target.value });
-};
+  const handleChange = (e) => {
+    setState({ ...state, [e.target.id]: e.target.value });
+  };
 
-const handleFormaDaTransacao = (e) => {
-  setState({ ...state, bancoCaixa: e.target.value });
-};
+  const handleFormaDaTransacao = (e) => {
+    setState({ ...state, bancoCaixa: e.target.value });
+  };
 
-const getColor = () => {
-    if (this.state.tipo === "entrada") {
+  const getColor = () => {
+    if (tipo === "entrada") {
       return { color: "green" };
-    } else if (this.state.tipo === "saida") {
+    } else if (tipo === "saida") {
       return { color: "red" };
     }
-};
+  };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { id, data, historico, finalidade, bancoCaixa, valor, tipo } = state;
 
+    let dados = { id, data, historico, finalidade, bancoCaixa, tipo };
 
-
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  const { id, data, historico, finalidade, bancoCaixa, valor, tipo } = state;
-
-  let dados = { id, data, historico, finalidade, bancoCaixa, tipo };
-
-  if (tipo === "entrada") {
-    dados.entrada = valor;
-    dados.saida = null;
-  } else if (tipo === "saida") {
-    dados.saida = valor;
-    dados.entrada = null;
-  }
+    if (tipo === "entrada") {
+      dados.entrada = valor;
+      dados.saida = null;
+    } else if (tipo === "saida") {
+      dados.saida = valor;
+      dados.entrada = null;
+    }
 
     ApiCRUD.saveOrUpdate(id, dados)
-    .then((response) => {
-      clearForm();
-     
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
+      .then((response) => {
+        clearForm();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <>
-      <Modal isOpen={this.modalOpen} onClose={this.handleClose}
+      <Modal
+        isOpen={handleOpenModal}
+        onClose={handleClose}
         show={props.showModal}
         onHide={props.handleClose}
         title={props.title}
@@ -200,7 +198,6 @@ const handleSubmit = (e) => {
       </Modal>
     </>
   );
-
 }
 
 export default MainForm2;
