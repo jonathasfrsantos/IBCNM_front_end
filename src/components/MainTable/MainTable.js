@@ -1,84 +1,83 @@
-import React, { useState, useEffect } from "react";
-import { Table } from "react-bootstrap";
-import moment from "moment/moment";
-import "./styles.css";
-import { ApiCRUD } from "../../services/api/ApiCRUD";
+import React, { useEffect, useState } from "react";
+import { Table, Button, Modal, Form } from "react-bootstrap";
+import Axios from "axios";
 import MainForm from "../MainForm/MainForm";
-import { Link } from "react-router-dom";
+import moment from "moment/moment";
 
 function MainTable() {
-  const [lancamentos, setLancamentos] = useState([]);
-  const [formIsOpen, setFormIsOpen] = useState(false);
-  const [dados, setDados] = useState(null);
+  const [data, setData] = useState([]); // A escolha de inicializar o state com uma lista vazia é uma prática comum quando se está aguardando uma resposta de uma API externa. Assim, evita-se erros de renderização, já que a lista é atualizada assim que os dados são carregados. Além disso, usando uma lista vazia no início permite que você defina uma lógica para lidar com o caso em que a lista ainda está vazia ou se há erros ao carregar os dados da API.
+  const [show, setShow] = useState(false);
+  const [selectedData, setSelectedData] = useState({
+    id: "",
+    data: "",
+    entrada: "",
+    saida: "",
+    historico: "",
+    finalidade: "",
+    bancoCaixa: ""
+  });
 
-  const handleAtualizar = async (id) => {
-    const dadoRecuperado = await ApiCRUD.getByDisplayValue(id); 
-    const dados = Object.entries(dadoRecuperado).map(([key, value])=> ({key, value}));
-    setDados(dados)
-    setFormIsOpen(true);
-    console.log(dados);
-    console.log(handleAtualizar);
-
+  const handleClose = () => setShow(false);
+  const handleShow = (data) => {
+    setSelectedData(data);
+    setShow(true);
   };
 
-  const handleExcluir = (id) => {
-    if (window.confirm("Tem certeza que deseja excluir esse lancamento? ")) {
-      ApiCRUD.delete(id).then(() => {
-        setLancamentos(
-          lancamentos.filter((lancamento) => lancamento.id !== id)
-        );
+    useEffect(() => {
+    Axios.get("http://localhost:8080/lancamentos")
+      .then(response => {
+        setData(response.data);
+      })
+      .catch(error => {
+        console.log(error);
       });
-    }
-  };
-
-  useEffect(() => {
-    ApiCRUD.getAll().then((response) => {
-      setLancamentos(response);
-    });
   }, []);
 
   return (
-    <div>
-      <Table className="MainTable" hover>
+    <>
+      <Table striped bordered hover>
         <thead>
           <tr>
             <th>#</th>
             <th>Data</th>
-            <th>Entradas R$</th>
-            <th> Saídas R$</th>
+            <th>Entrada</th>
+            <th>Saída</th>
             <th>Histórico</th>
             <th>Finalidade</th>
             <th>Banco/Caixa</th>
-            <th></th>
-            <th></th>
+            <th>Ação</th>
           </tr>
         </thead>
         <tbody>
-          {lancamentos.map((lancamento, index) => (
-            <tr key={lancamento.id}>
+          {data.map((data, index) => (
+            <tr key={index}>
               <td>{index + 1}</td>
-              <td>{moment(lancamento.data).format("DD/MM/YYYY")}</td>
-              <td className="td_entrada">{lancamento.entrada}</td>
-              <td className="td_saida">{lancamento.saida}</td>
-              <td>{lancamento.historico}</td>
-              <td>{lancamento.finalidade}</td>
-              <td>{lancamento.bancoCaixa}</td>
-              <td><button onClick={() => handleAtualizar(lancamento.id)}><i className="fas fa-edit"></i></button></td>
+              <td>{moment(data.data).format("DD/MM/YYYY")}</td>
+              <td>{data.entrada}</td>
+              <td>{data.saida}</td>
+              <td>{data.historico}</td>
+              <td>{data.finalidade}</td>
+              <td>{data.bancoCaixa}</td>
               <td>
-                {" "}
-                <button onClick={() => handleExcluir(lancamento.id)}>
-                  {" "}
-                  <i className="fas fa-trash"></i>
-                </button>
+                <Button onClick={() => handleShow(data)}>Editar</Button>
               </td>
             </tr>
           ))}
-            {formIsOpen && <MainForm dados={dados} />}
-          
         </tbody>
       </Table>
-    </div>
-  
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Dados</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <MainForm
+            data={selectedData}
+            close={handleClose}
+            updateData={setData}
+          />
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }
 

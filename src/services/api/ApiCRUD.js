@@ -13,7 +13,7 @@ export const ApiCRUD = {
     }
   },
 
-  async getByDisplayValue(id) {
+  async getByDyId(id) {
     try {
       const response = await axios.get(`${baseUrl}/${id}`);
       return response.data;

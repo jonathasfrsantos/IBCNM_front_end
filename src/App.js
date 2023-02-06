@@ -13,8 +13,8 @@ function App() {
       <div>
         <NavBar />
         <Buttons />
-        <MainTable />
-        <MainForm />
+        <MainTable  />
+  
       </div>
   );
 };
