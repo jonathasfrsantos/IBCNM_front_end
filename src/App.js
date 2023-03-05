@@ -6,13 +6,16 @@ import NavBar from './components/Navbar/Navbar'
 import Buttons from './components/Buttons/Buttons';
 import MainForm from './components/MainForm/MainForm';
 import MainTable from './components/MainTable/MainTable';
+import TotalsCards from './components/cards/Cards';
 
 function App() {
 
   return (
       <div>
         <NavBar />
+      
         <Buttons />
+        <TotalsCards />
         <MainTable  />
   
       </div>
