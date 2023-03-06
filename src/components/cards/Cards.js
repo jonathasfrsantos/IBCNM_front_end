@@ -1,18 +1,19 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
+import MainForm from "../MainForm/MainForm";
 
 import "./styles.css"
 
 function TotalsCards(){
     const [ totalEntradas, setTotalEntradas] = useState(0);
 
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get("http://localhost:8080/lancamentos/getTotalEntradas");
-                setTotalEntradas(response.data);
-           
+                setTotalEntradas(response.data);          
                 
             } catch (error) {
                 console.error(error);
@@ -30,7 +31,7 @@ function TotalsCards(){
                     <Card.Body className="card-body">
                         <Card.Title> Entradas R$</Card.Title>
                         <Card.Text> {totalEntradas} </Card.Text>
-                      
+                    
                     </Card.Body>
                 </Card>
 
@@ -54,6 +55,7 @@ function TotalsCards(){
                         <Card.Text> 20.000,00 </Card.Text>
                     </Card.Body>
                 </Card>
+            
       
         </div>
     )

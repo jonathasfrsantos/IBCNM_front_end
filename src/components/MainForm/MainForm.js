@@ -5,7 +5,7 @@ import { ApiCRUD } from "../../services/api/ApiCRUD";
 
 import "./styles.css";
 
-function MainForm({ dataEdit, close, updateData }) {
+function MainForm({ dataEdit, close, updateData, onSubmit }) {
   const [formData, setFormData] = useState({
     id: (dataEdit && dataEdit.id) || "",
     data: (dataEdit && dataEdit.data) || "",
@@ -43,11 +43,15 @@ function MainForm({ dataEdit, close, updateData }) {
         updateData((prevData) =>
           prevData.map((data) => (data.id === formData.id ? formData : data))
         );
+          onSubmit((prevData) => 
+            prevData.map((data) => (data.id === formData.id ? formData : data))
+        );
        setModalIsOpen(false);
       });
     } else {
       ApiCRUD.create(formData).then((response) => {
-        updateData((prevData) => [...prevData, response.formData]);
+        updateData((prevData) => [...prevData, response.data]);
+        onSubmit(response.data); 
       });
       clearForm();
     }
