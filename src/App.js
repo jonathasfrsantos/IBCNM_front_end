@@ -12,10 +12,7 @@ function App() {
 
   return (
       <div>
-        <NavBar />
-      
-        <Buttons />
-        <TotalsCards />
+     
         <MainTable  />
   
       </div>
